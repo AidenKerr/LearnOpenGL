@@ -24,6 +24,8 @@ unsigned int indices[] = {  // note that we start from 0!
     1, 2, 3    // second triangle
 };
 
+float mixAmt = 0.2f;
+
 int main()
 {
     std::cout << "Starting LearnOpenGL" << std::endl;
@@ -142,6 +144,7 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
         glBindVertexArray(VAO);
+        ourShader.setFloat("mixAmt", mixAmt);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // check and call events and swap the buffers
@@ -165,4 +168,18 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        mixAmt += 0.001f;
+        if (mixAmt > 1.0f)
+            mixAmt = 1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        mixAmt -= 0.001f;
+        if (mixAmt < 0.0f)
+            mixAmt = 0.0f;
+    }
 }
