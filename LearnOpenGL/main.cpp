@@ -169,15 +169,6 @@ int main()
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
 
-    // going 3d
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f),(float)(SCR_WIDTH / SCR_HEIGHT), 0.1f, 100.0f);
-
-    ourShader.setMat4("view", view);
-    ourShader.setMat4("proj", projection);
-
     while (!glfwWindowShouldClose(window))
     {
         // process inputs
@@ -187,7 +178,6 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
         // bind the other VAO
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -195,8 +185,13 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
         glBindVertexArray(VAO);
 
-        // update uniforms
+        // update uniforms and matrices
         ourShader.setFloat("mixAmt", mixAmt);
+        glm::mat4 view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        ourShader.setMat4("view", view);
+        ourShader.setMat4("proj", projection);
 
         // draw to screen
         for (unsigned int i = 0; i < 10; i++)
