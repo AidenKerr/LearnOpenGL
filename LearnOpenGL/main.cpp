@@ -79,6 +79,7 @@ float mixAmt = 0.2f;
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+float cameraSpeed = 2.5f;
 float yaw = -90.0f;
 float pitch = 0.0f;
 float fov = 45.0f;
@@ -263,15 +264,15 @@ void processInput(GLFWwindow* window)
     }
 
     // movement
-    float cameraSpeed = 2.5f * deltaTime;
+    float moveSpeed = cameraSpeed * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        cameraPos += moveSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        cameraPos -= moveSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+        cameraPos -= moveSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+        cameraPos += moveSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos)
