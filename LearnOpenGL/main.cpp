@@ -19,11 +19,15 @@ const unsigned int SCR_WIDTH = 1600;
 const unsigned int SCR_HEIGHT = 1200;
 
 struct Light {
-    glm::vec3 direction;
-    //vec3 position;
+    glm::vec3 position;
+
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;
+    
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 float vertices[] = {
@@ -92,13 +96,14 @@ bool firstMouse = true;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
-glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
-
 Light light = {
-    glm::vec3(-0.2f, -1.0f, -0.3f), // direction
+    glm::vec3(1.2f, 1.0f, 2.0f), // position
     glm::vec3(0.2f, 0.2f, 0.2f), // ambient
     glm::vec3(0.5f, 0.5f, 0.5f), // diffuse
-    glm::vec3(1.0f, 1.0f, 1.0f)  // specular
+    glm::vec3(1.0f, 1.0f, 1.0f), // specular
+    1.0f,  // constant
+    0.09f, // linear
+    0.032f // quadratic
 };
 
 int main()
@@ -198,8 +203,8 @@ int main()
         processInput(window);
 
         // update position
-        lightPos.x = 1.2f + 2.0f * (float) sin(glfwGetTime());
-        lightPos.y = 1.2f + (float) sin(glfwGetTime() * 0.35f);
+        light.position.x = 1.2f + 2.0f * (float) sin(glfwGetTime());
+        light.position.y = 1.2f + (float) sin(glfwGetTime() * 0.35f);
 
         // rendering commands here
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -215,7 +220,10 @@ int main()
         lightingShader.setVec3("light.ambient", light.ambient);
         lightingShader.setVec3("light.diffuse", light.diffuse);
         lightingShader.setVec3("light.specular", light.specular);
-        lightingShader.setVec3("light.direction", light.direction);
+        lightingShader.setVec3("light.position", light.position);
+        lightingShader.setFloat("light.constant", light.constant);
+        lightingShader.setFloat("light.linear", light.linear);
+        lightingShader.setFloat("light.quadratic", light.quadratic);
 
         glm::mat4 view = camera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -239,7 +247,7 @@ int main()
 
         // draw light
         model = glm::mat4(1.0);
-        model = glm::translate(model, lightPos);
+        model = glm::translate(model, light.position);
         model = glm::scale(model, glm::vec3(0.2f));
         lightCubeShader.use();
         lightCubeShader.setMat4("model", model);
