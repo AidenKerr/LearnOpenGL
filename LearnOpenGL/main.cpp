@@ -210,10 +210,10 @@ int main()
         lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
         lightingShader.setFloat("material.shininess", 64.0f);
 
-        lightingShader.setVec3("dirlight.direction", -0.2f, -1.0f, -0.3f);
-        lightingShader.setVec3("dirlight.ambient", 0.05f, 0.05f, 0.05f);
-        lightingShader.setVec3("dirlight.diffuse", 0.4f, 0.4f, 0.4f);
-        lightingShader.setVec3("durlight.specular", 0.5f, 0.5f, 0.5f);
+        lightingShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+        lightingShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+        lightingShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+        lightingShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
         lightingShader.setVec3("pointLights[0].position", pointLightPositions[0]);
         lightingShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
